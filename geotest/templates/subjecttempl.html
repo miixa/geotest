@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for sub in subject %}
+<p>Предмет</p><a href=""> {{sub.title}} </a>
+{% endfor %}
+  <div class="small-2 large-4 columns">
+      <form action="/addsubject" method="post">
+          {% csrf_token %}
+          <input type="submit" class="button" value=" Добавить предмет ">
+    </form>
+  </div>
+</body>
+</html>
