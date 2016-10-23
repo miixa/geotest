@@ -1,19 +1,33 @@
 from django.forms import ModelForm
 from geotest.models import *
 from django import forms
+from django.forms import widgets
 
 class ThemeForm(ModelForm):
     class Meta:
         model = Theme
         fields = ['title', 'subject']
 
-class addQuestionForm(forms.Form):
-
+class addSubjectForm(forms.Form):
     subject = forms.CharField(label="Предмет", max_length=20)
+
+class addThemeForm(forms.Form):
     theme = forms.CharField(label="Тема", max_length=20)
-    question = forms.CharField(label="Вопрос", max_length=2000)
-    coranswer = forms.CharField(label="Правильный ответ", max_length=2000)
-    incoranswer = forms.CharField(label="Не правильный ответ", max_length=2000)
+
+class addQuestionForm(forms.Form):
+    question = forms.CharField(label="",widget=forms.Textarea,max_length=400)
+
+class addAnswerCorrectForm(forms.Form):
+    answer_correct = forms.CharField(label="Правильный ответ",widget=forms.Textarea,max_length=400)
+
+class addAnswerInCorrectForm(forms.Form):
+    answer_incorrect = forms.CharField(label="Не правильный ответ",widget=forms.Textarea,max_length=400)
+
+#class addQuestionForm(forms.Form):
+#    theme = forms.CharField(label="Тема", max_length=20)
+#    question = forms.CharField(label="Вопрос", max_length=2000)
+#    coranswer = forms.CharField(label="Правильный ответ", max_length=2000)
+#    incoranswer = forms.CharField(label="Не правильный ответ", max_length=2000)
 
 
 

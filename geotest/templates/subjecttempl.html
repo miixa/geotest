@@ -5,12 +5,17 @@
     <title>Title</title>
 </head>
 <body>
+<p>Предмет</p>
 {% for sub in subject %}
-<p>Предмет</p><a href=""> {{sub.title}} </a>
+<a href="/test/theme/{{sub.id}}"> {{sub.title}} </a><br>
 {% endfor %}
+<br>
+<br>
+<br>
   <div class="small-2 large-4 columns">
-      <form action="/addsubject" method="post">
+      <form action="/test/addsubject" method="post">
           {% csrf_token %}
+          {{addSubjectForm}}
           <input type="submit" class="button" value=" Добавить предмет ">
     </form>
   </div>

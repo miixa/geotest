@@ -19,6 +19,13 @@ from geotest import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^test/addquestion', views.addQuestion),
     url(r'^test/subject', views.subject_view),
+    url(r'^test/addsubject',views.addSubject_view),
+    url(r'^test/theme/(?P<subject_id>\d+)',views.theme_view),
+    url(r'^test/addtheme/(?P<subject_id>\d+)',views.addTheme_view),
+    url(r'^test/question/(?P<subject_id>\d+)/(?P<theme_id>\d+)',views.question_view),
+    url(r'^test/addquestion/(?P<subject_id>\d+)/(?P<theme_id>\d+)',views.addQuestion_view),
+    url(r'^test/answer/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)',views.answer_view),
+    url(r'^test/addanswercorrect/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)', views.addAnswerCorrect_view),
+    url(r'^test/addanswerincorrect/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)', views.addAnswerInCorrect_view),
 ]

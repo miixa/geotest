@@ -28,6 +28,7 @@ class Question(models.Model):
     title = models.CharField(max_length=400)
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
+    user = models.ForeignKey(CustomUser)
     # def __unicode__(self):
     # return self.title
 
@@ -37,6 +38,7 @@ class CorrectAnswer(models.Model):
     question = models.ForeignKey(Question)
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
+    user = models.ForeignKey(CustomUser)
     # def __unicode__(self):
     # return self.title
 
@@ -46,5 +48,6 @@ class IncorrectAnswer(models.Model):
     question = models.ForeignKey(Question)
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
+    user = models.ForeignKey(CustomUser)
     # def __unicode__(self):
     # return self.title

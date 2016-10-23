@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{subject_id}}
+{{theme_id}}
+aaaaaaa {{question_id}}
+{{answer_correct_id}}
+{{answer_incorrect_id}}
+
+<p>Вопрос</p>
+{% for qst in question %}
+    <h6> {{qst.title}} </h6><br>
+{% endfor %}
+<p>Ответы</p>
+{% for asw in answer_correct %}
+    <h6 style="color:#00FF00"> Правильный ответ: {{asw.title}} </h6><br>
+{% endfor %}
+{% for asw in answer_incorrect %}
+    <h6 style="color:#ff0000"> Не правильный ответ: {{asw.title}} </h6><br>
+{% endfor %}
+<br>
+<br>
+<br>
+  <div class="small-2 large-4 columns">
+      <form action="/test/addanswercorrect/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">
+          {% csrf_token %}
+          {{addAnswerCorrectForm}}
+          <input type="submit" class="button" value=" Добавить ответ ">
+    </form>
+  </div>
+  <div class="small-2 large-4 columns">
+      <form action="/test/addanswerincorrect/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">
+          {% csrf_token %}
+          {{addAnswerInCorrectForm}}
+          <input type="submit" class="button" value=" Добавить ответ ">
+    </form>
+  </div>
+</body>
+</html>

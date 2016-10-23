@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{subject_id}}
+{{theme_id}}
+<p>Вопросы</p>
+{% for qst in question %}
+<a href="/test/answer/{{subject_id}}/{{theme_id}}/{{qst.id}}"> {{qst.title}} </a><br>
+{% endfor %}
+<br>
+<br>
+<br>
+  <div class="small-2 large-4 columns">
+      <form action="/test/addquestion/{{subject_id}}/{{theme_id}}" method="post">
+          {% csrf_token %}
+          {{addQuestionForm}}<br>
+          <input type="submit" class="button" value=" Добавить вопрос ">
+    </form>
+  </div>
+</body>
+</html>

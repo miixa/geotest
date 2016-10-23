@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{{subject_id}}
+<p>Тема</p>
+{% for thm in theme %}
+    <a href="/test/question/{{subject_id}}/{{thm.id}}"> {{thm.title}} </a><br>
+{% endfor %}
+<br>
+<br>
+<br>
+  <div class="small-2 large-4 columns">
+      <form action="/test/addtheme/{{subject_id}}" method="post">
+          {% csrf_token %}
+          {{addThemeForm}}
+          <input type="submit" class="button" value=" Добавить тему ">
+    </form>
+  </div>
+</body>
+</html>
