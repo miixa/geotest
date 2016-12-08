@@ -39,6 +39,7 @@ class CorrectAnswer(models.Model):
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
     user = models.ForeignKey(CustomUser)
+    uniqid = models.IntegerField(max_length=5)
     # def __unicode__(self):
     # return self.title
 
@@ -49,5 +50,6 @@ class IncorrectAnswer(models.Model):
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
     user = models.ForeignKey(CustomUser)
+    uniqid = models.IntegerField(max_length=5)
     # def __unicode__(self):
     # return self.title

@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^test/answer/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)',views.answer_view),
     url(r'^test/addanswercorrect/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)', views.addAnswerCorrect_view),
     url(r'^test/addanswerincorrect/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)', views.addAnswerInCorrect_view),
+    url(r'^tested',views.tested_view),
 ]

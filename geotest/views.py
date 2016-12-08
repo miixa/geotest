@@ -129,6 +129,29 @@ def addAnswerInCorrect_view(request, subject_id, theme_id, question_id):
             model_answer = models.IncorrectAnswer(**answer_incorrect)
             model_answer.save()
     return HttpResponseRedirect('/test/answer/'+subject_id+'/'+theme_id+'/'+question_id)
+
+###########################TESTED#######################################
+#
+#
+#
+def tested_view(request):
+    csrfContext = RequestContext(request)
+    correct = [a for a in models.CorrectAnswer.objects.all()]
+    incorrect = [a for a in models.IncorrectAnswer.objects.all()]
+    answers = []
+    answers.extend(correct)
+    answers.extend(incorrect)
+    print ('cor',correct)
+    print ('inc',incorrect)
+    print ('all',answers)
+    args = {
+        'Questions':models.Question.objects.all(),
+        'Subjects': models.Subject.objects.all(),
+        'Themes': models.Theme.objects.all(),
+        'CorrectAnswers': answers
+        #'IncorrectAnswers': models.IncorrectAnswer.objects.all()
+    }
+    return render_to_response('tested.html',args,csrfContext)
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)
 #    if request.method == 'POST':
