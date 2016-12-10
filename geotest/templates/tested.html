@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TESTED</title>
+    {% for qst in  Questions %}
+        {% for sub in Subjects %}
+            {% for thm in Themes %}
+                {% if qst.subject_id == sub.id and qst.theme_id == thm.id %}
+                    <h5>Предмет</h5>{{sub.title}}
+                    <h6>Тема</h6>{{thm.title}}
+                    <h6>Вопрос</h6>{{qst.title}}
+                    <h6>Ответы</h6>
+                    {% for ans in CorrectAnswers %}
+                        {% if qst.id == ans.question_id %}
+                            <input name="ans" type="radio" value="{{ans.id}}" >{{ans.title}}<br>
+                        {% endif %}
+                    {% endfor %}
+                    <hr>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+</head>
+<body>
+123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123
+</body>
+</html>
