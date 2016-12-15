@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор предмета</title>
+</head>
+<body>
+{% csrf_token %}
+{% for sub in Subjects %}
+    <!--<form action="/tested/addanswercorrect/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">-->
+    {{sub.title}}
+{% endfor %}
+</body>
+</html>

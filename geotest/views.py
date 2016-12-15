@@ -4,12 +4,8 @@ from django.shortcuts import render_to_response, HttpResponseRedirect
 from geotest import forms  # AddClientForm, EditClientForm, AddOrganizationForm, EditOrganizationForm, AddCarForm
 from geotest import models
 from django.template import RequestContext
-# from models import Clients, Organization, Car
-# import string, random
-# from django.contrib.auth.forms import User
-# from django.contrib import auth
-# import os
-# from models import file_path
+from django.db import connection
+from django.http import HttpRequest
 
 def subject_view(request):
     csrfContext = RequestContext(request)
@@ -112,12 +108,20 @@ def addAnswerCorrect_view(request, subject_id, theme_id, question_id):
             }
             model_answer = models.CorrectAnswer(**answer_correct)
             model_answer.save()
-            #print model_answer.id
+            CorrectAnswer_id = model_answer.pk
+            cursor = connection.cursor()
+            cursor.execute (
+                '''INSERT INTO geotest_uid (CorrectAnswer_id) VALUES ( %s )''',
+                (CorrectAnswer_id,))
+            cursor.execute('''SELECT id FROM geotest_uid WHERE CorrectAnswer_id=%s''',
+                           (CorrectAnswer_id,))
+            uid_id = cursor.fetchone()[0]
+            cursor.execute('''UPDATE geotest_correctanswer SET Uid_id=%s WHERE id=%s''',
+                           (uid_id, CorrectAnswer_id,))
     return HttpResponseRedirect('/test/answer/' + subject_id + '/' + theme_id + '/' + question_id)
 
 def addAnswerInCorrect_view(request, subject_id, theme_id, question_id):
     csrfContext = RequestContext(request)
-
     if request.method == 'POST':
         form = forms.addAnswerInCorrectForm(request.POST or None)
         if form.is_valid():
@@ -130,12 +134,27 @@ def addAnswerInCorrect_view(request, subject_id, theme_id, question_id):
             }
             model_answer = models.IncorrectAnswer(**answer_incorrect)
             model_answer.save()
+            IncorrectAnswer_id = model_answer.pk
+            cursor = connection.cursor()
+            cursor.execute (
+                '''INSERT INTO geotest_uid (IncorrectAnswer_id) VALUES ( %s )''',
+                (IncorrectAnswer_id,))
+            cursor.execute('''SELECT id FROM geotest_uid WHERE IncorrectAnswer_id=%s''',
+                           (IncorrectAnswer_id,))
+            uid_id = cursor.fetchone()[0]
+            cursor.execute('''UPDATE geotest_incorrectanswer SET Uid_id=%s WHERE id=%s''',
+                           (uid_id, IncorrectAnswer_id,))
     return HttpResponseRedirect('/test/answer/'+subject_id+'/'+theme_id+'/'+question_id)
 
 ###########################TESTED#######################################
 #
 #
 #
+def tested_choice_sub (request):
+    csrfContext = RequestContext(request)
+    args = {'Subjects': models.Subject.objects.all()}
+    return render_to_response('choice_subject.html',args,csrfContext)
+
 def tested_view(request):
     csrfContext = RequestContext(request)
     correct = [a for a in models.CorrectAnswer.objects.all()]
@@ -143,13 +162,22 @@ def tested_view(request):
     answers = []
     answers.extend(correct)
     answers.extend(incorrect)
+    #def all_answer():
     args = {
         'Questions':models.Question.objects.all(),
         'Subjects': models.Subject.objects.all(),
         'Themes': models.Theme.objects.all(),
-        'CorrectAnswers': answers
+        'Answers': answers,
     }
     return render_to_response('tested.html',args,csrfContext)
+
+def calculate_view(request):
+    print(request.body)
+    csrfContext = RequestContext(request)
+    #if request.method == 'POST':
+        #r = HttpRequest.POST
+        #print(r)
+    return HttpResponseRedirect('/tested')
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)
 #    if request.method == 'POST':
