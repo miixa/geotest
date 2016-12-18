@@ -32,26 +32,29 @@ class Question(models.Model):
     # def __unicode__(self):
     # return self.title
 
-class CorrectAnswer(models.Model):
+class Answer(models.Model):
     title = models.CharField(max_length=400)
     question = models.ForeignKey(Question)
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
     user = models.ForeignKey(CustomUser)
-    Uid_id = models.IntegerField(max_length=10,null=True)
+    check = models.NullBooleanField()
+
+#class CorrectAnswer(models.Model):
+#   title = models.CharField(max_length=400)
+#    question = models.ForeignKey(Question)
+#    subject = models.ForeignKey(Subject)
+#    theme = models.ForeignKey(Theme)
+#    user = models.ForeignKey(CustomUser)
     # def __unicode__(self):
     # return self.title
 
-class IncorrectAnswer(models.Model):
-    title = models.CharField(max_length=400)
-    question = models.ForeignKey(Question)
-    subject = models.ForeignKey(Subject)
-    theme = models.ForeignKey(Theme)
-    user = models.ForeignKey(CustomUser)
-    Uid_id = models.IntegerField(max_length=10, null=True)
+#class IncorrectAnswer(models.Model):
+#    title = models.CharField(max_length=400)
+#    question = models.ForeignKey(Question)
+#    subject = models.ForeignKey(Subject)
+#    theme = models.ForeignKey(Theme)
+#    user = models.ForeignKey(CustomUser)
     # def __unicode__(self):
     # return self.title
 
-class Uid (models.Model):
-    CorrectAnswer_id = models.IntegerField(max_length=10,null=True)
-    IncorrectAnswer_id = models.IntegerField(max_length=10, null=True)

@@ -29,6 +29,6 @@ urlpatterns = [
     url(r'^test/addanswercorrect/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)', views.addAnswerCorrect_view),
     url(r'^test/addanswerincorrect/(?P<subject_id>\d+)/(?P<theme_id>\d+)/(?P<question_id>\d+)', views.addAnswerInCorrect_view),
     url(r'^tested/$',views.tested_choice_sub),
-    #url(r'^tested/$',views.tested_view),
+    url(r'^tested/(?P<subject_id>\d+)',views.tested_view),
     url(r'^tested/calculate',views.calculate_view),
 ]

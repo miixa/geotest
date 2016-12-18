@@ -7,8 +7,7 @@
 <body>
 {% csrf_token %}
 {% for sub in Subjects %}
-    <!--<form action="/tested/addanswercorrect/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">-->
-    {{sub.title}}
+    <a href="/tested/{{sub.id}}"> {{sub.title}} </a><br>
 {% endfor %}
 </body>
 </html>

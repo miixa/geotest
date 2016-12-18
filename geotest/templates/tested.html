@@ -14,7 +14,7 @@
                     <h6>Ответы</h6>
                     {% for ans in Answers %}
                         {% if qst.id == ans.question_id %}
-                                <input name="{{total_quests}}_{{qst.id}}_{{ans.Uid_id}}" type="radio" value="{{ans.id}}" >{{ans.title}}<br>
+                                <input name="{{total_quests}}_{{qst.id}}_{{ans.Uid_id}}_{{ans.id}}_" type="radio" >{{ans.title}}<br>
                         {% endif %}
                     {% endfor %}
                     <hr>

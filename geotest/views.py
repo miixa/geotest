@@ -155,28 +155,39 @@ def tested_choice_sub (request):
     args = {'Subjects': models.Subject.objects.all()}
     return render_to_response('choice_subject.html',args,csrfContext)
 
-def tested_view(request):
+def tested_view(request, subject_id):
     csrfContext = RequestContext(request)
-    correct = [a for a in models.CorrectAnswer.objects.all()]
-    incorrect = [a for a in models.IncorrectAnswer.objects.all()]
+    correct = [a for a in models.CorrectAnswer.objects.filter(subject_id=subject_id)]
+    incorrect = [a for a in models.IncorrectAnswer.objects.filter(subject_id=subject_id)]
     answers = []
     answers.extend(correct)
     answers.extend(incorrect)
-    #def all_answer():
     args = {
-        'Questions':models.Question.objects.all(),
-        'Subjects': models.Subject.objects.all(),
-        'Themes': models.Theme.objects.all(),
+        'Questions':models.Question.objects.filter(subject_id=subject_id),
+        'Subjects': models.Subject.objects.filter(id=subject_id),
+        'Themes': models.Theme.objects.filter(subject_id=subject_id),
         'Answers': answers,
+        'Sub_id': subject_id,
     }
     return render_to_response('tested.html',args,csrfContext)
 
 def calculate_view(request):
-    print(request.body)
     csrfContext = RequestContext(request)
-    #if request.method == 'POST':
-        #r = HttpRequest.POST
-        #print(r)
+    if request.method == 'POST':
+        ans = request.body
+        ans = ans.decode('utf-8')
+        ans = ans.split('&')
+        for ans in ans:
+            ans = ans.split('_')
+            cursor = connection.cursor()
+            cursor.execute('''SELECT titel FROM geotest_question WHERE id=%s''',
+                           (ans[1],))
+            quest = cursor.fetchone()[0]
+            cursor.execute('''SELECT titel FROM geotest_answer WHERE id=%s''',
+                           (ans[1],))
+            quest = cursor.fetchone()[0]
+
+
     return HttpResponseRedirect('/tested')
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)
