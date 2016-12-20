@@ -26,14 +26,14 @@ aaaaaaa {{question_id}}
 <br>
 <br>
   <div class="small-2 large-4 columns">
-      <form action="/test/addanswercorrect/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">
+      <form action="/test/addanswer/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">
           {% csrf_token %}
           {{addAnswerCorrectForm}}
           <input type="submit" class="button" value=" Добавить ответ ">
     </form>
   </div>
   <div class="small-2 large-4 columns">
-      <form action="/test/addanswerincorrect/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">
+      <form action="/test/addanswer/{{subject_id}}/{{theme_id}}/{{question_id}}" method="post">
           {% csrf_token %}
           {{addAnswerInCorrectForm}}
           <input type="submit" class="button" value=" Добавить ответ ">

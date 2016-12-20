@@ -84,17 +84,17 @@ def answer_view(request,subject_id,theme_id, question_id):
         'question_id': question_id,
         'question': models.Question.objects.filter(user_id=0, subject_id=subject_id,
                                                    theme_id=theme_id,id=question_id),
-        'answer_correct': models.CorrectAnswer.objects.filter(user_id=0,subject_id=subject_id,
-                                                              theme_id=theme_id,question_id=question_id),
-        'answer_incorrect': models.IncorrectAnswer.objects.filter(user_id=0, subject_id=subject_id,
-                                                                  theme_id=theme_id,question_id=question_id),
+        'answer_correct': models.Answer.objects.filter(user_id=0,subject_id=subject_id,
+                                                       theme_id=theme_id,question_id=question_id,check=1),
+        'answer_incorrect': models.Answer.objects.filter(user_id=0, subject_id=subject_id,
+                                                       theme_id=theme_id, question_id=question_id, check=0),
         'addAnswerCorrectForm': forms.addAnswerCorrectForm,
         'addAnswerInCorrectForm': forms.addAnswerInCorrectForm,
 
     }
     return render_to_response('answertempl.html',args,csrfContext)
 
-def addAnswerCorrect_view(request, subject_id, theme_id, question_id):
+def addAnswer_view(request, subject_id, theme_id, question_id):
     csrfContext = RequestContext(request)
     if request.method == 'POST':
         form = forms.addAnswerCorrectForm(request.POST or None)
@@ -104,25 +104,11 @@ def addAnswerCorrect_view(request, subject_id, theme_id, question_id):
                 'subject_id': subject_id,
                 'theme_id': theme_id,
                 'question_id': question_id,
+                'check': 1,
                 'user_id': 0,
             }
-            model_answer = models.CorrectAnswer(**answer_correct)
+            model_answer = models.Answer(**answer_correct)
             model_answer.save()
-            CorrectAnswer_id = model_answer.pk
-            cursor = connection.cursor()
-            cursor.execute (
-                '''INSERT INTO geotest_uid (CorrectAnswer_id) VALUES ( %s )''',
-                (CorrectAnswer_id,))
-            cursor.execute('''SELECT id FROM geotest_uid WHERE CorrectAnswer_id=%s''',
-                           (CorrectAnswer_id,))
-            uid_id = cursor.fetchone()[0]
-            cursor.execute('''UPDATE geotest_correctanswer SET Uid_id=%s WHERE id=%s''',
-                           (uid_id, CorrectAnswer_id,))
-    return HttpResponseRedirect('/test/answer/' + subject_id + '/' + theme_id + '/' + question_id)
-
-def addAnswerInCorrect_view(request, subject_id, theme_id, question_id):
-    csrfContext = RequestContext(request)
-    if request.method == 'POST':
         form = forms.addAnswerInCorrectForm(request.POST or None)
         if form.is_valid():
             answer_incorrect = {
@@ -130,21 +116,12 @@ def addAnswerInCorrect_view(request, subject_id, theme_id, question_id):
                 'subject_id': subject_id,
                 'theme_id': theme_id,
                 'question_id': question_id,
+                'check': 0,
                 'user_id': 0,
             }
-            model_answer = models.IncorrectAnswer(**answer_incorrect)
+            model_answer = models.Answer(**answer_incorrect)
             model_answer.save()
-            IncorrectAnswer_id = model_answer.pk
-            cursor = connection.cursor()
-            cursor.execute (
-                '''INSERT INTO geotest_uid (IncorrectAnswer_id) VALUES ( %s )''',
-                (IncorrectAnswer_id,))
-            cursor.execute('''SELECT id FROM geotest_uid WHERE IncorrectAnswer_id=%s''',
-                           (IncorrectAnswer_id,))
-            uid_id = cursor.fetchone()[0]
-            cursor.execute('''UPDATE geotest_incorrectanswer SET Uid_id=%s WHERE id=%s''',
-                           (uid_id, IncorrectAnswer_id,))
-    return HttpResponseRedirect('/test/answer/'+subject_id+'/'+theme_id+'/'+question_id)
+    return HttpResponseRedirect('/test/answer/' + subject_id + '/' + theme_id + '/' + question_id)
 
 ###########################TESTED#######################################
 #
@@ -157,11 +134,9 @@ def tested_choice_sub (request):
 
 def tested_view(request, subject_id):
     csrfContext = RequestContext(request)
-    correct = [a for a in models.CorrectAnswer.objects.filter(subject_id=subject_id)]
-    incorrect = [a for a in models.IncorrectAnswer.objects.filter(subject_id=subject_id)]
+    correct = [a for a in models.Answer.objects.filter(subject_id=subject_id)]
     answers = []
     answers.extend(correct)
-    answers.extend(incorrect)
     args = {
         'Questions':models.Question.objects.filter(subject_id=subject_id),
         'Subjects': models.Subject.objects.filter(id=subject_id),
@@ -180,10 +155,10 @@ def calculate_view(request):
         for ans in ans:
             ans = ans.split('_')
             cursor = connection.cursor()
-            cursor.execute('''SELECT titel FROM geotest_question WHERE id=%s''',
+            cursor.execute('''SELECT check FROM geotest_answer WHERE id=%s''',
                            (ans[1],))
             quest = cursor.fetchone()[0]
-            cursor.execute('''SELECT titel FROM geotest_answer WHERE id=%s''',
+            cursor.execute('''SELECT check FROM geotest_answer WHERE id=%s''',
                            (ans[1],))
             quest = cursor.fetchone()[0]
 
