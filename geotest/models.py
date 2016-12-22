@@ -38,7 +38,14 @@ class Answer(models.Model):
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
     user = models.ForeignKey(CustomUser)
-    check = models.NullBooleanField()
+    check = models.IntegerField(null=True)
+
+class result(models.Model):
+    uniq_id = models.IntegerField(null=True)
+    date = models.DateField()
+    time = models.TimeField()
+    question = models.ForeignKey(Question)
+    answer = models.ForeignKey(Answer)
 
 #class CorrectAnswer(models.Model):
 #   title = models.CharField(max_length=400)

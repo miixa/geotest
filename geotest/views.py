@@ -152,17 +152,21 @@ def calculate_view(request):
         ans = request.body
         ans = ans.decode('utf-8')
         ans = ans.split('&')
+        def rand_id():
+            rid = ''
+            for x in range(8): rid += random.choice(string.digits)
+            return rid
+        uniq_id = rand_id()
         for ans in ans:
             ans = ans.split('_')
             cursor = connection.cursor()
-            cursor.execute('''SELECT check FROM geotest_answer WHERE id=%s''',
-                           (ans[1],))
+            cursor.execute('''SELECT 'check' FROM geotest_answer WHERE id=%s''',
+                           (ans[3],))
             quest = cursor.fetchone()[0]
-            cursor.execute('''SELECT check FROM geotest_answer WHERE id=%s''',
-                           (ans[1],))
-            quest = cursor.fetchone()[0]
-
-
+            cursor.execute('''INSERT INTO geotest_result (uniq_id)  VALUES (%s)''',
+                           (uniq_id,))
+            cursor.execute('''INSERT INTO geotest_result (date)  VALUES (%s)''',
+                           (uniq_id,))
     return HttpResponseRedirect('/tested')
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)
