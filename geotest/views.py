@@ -5,6 +5,9 @@ from geotest import forms  # AddClientForm, EditClientForm, AddOrganizationForm,
 from geotest import models
 from django.template import RequestContext
 from django.db import connection
+import random
+import string
+import datetime
 from django.http import HttpRequest
 
 def subject_view(request):
@@ -156,17 +159,32 @@ def calculate_view(request):
             rid = ''
             for x in range(8): rid += random.choice(string.digits)
             return rid
+        def dt():
+            d = datetime.datetime.now()
+            time = d.time().strftime("%H:%M")
+            date = d.date().strftime("%Y-%m-%d")
+            return (date, time)
         uniq_id = rand_id()
+        dt = dt()
         for ans in ans:
             ans = ans.split('_')
             cursor = connection.cursor()
             cursor.execute('''SELECT 'check' FROM geotest_answer WHERE id=%s''',
-                           (ans[3],))
-            quest = cursor.fetchone()[0]
-            cursor.execute('''INSERT INTO geotest_result (uniq_id)  VALUES (%s)''',
+                           (ans[2],))
+            check = cursor.fetchone()[0]
+            cursor.execute('''INSERT INTO geotest_result (uniqid)  VALUES (%s)''',
                            (uniq_id,))
-            cursor.execute('''INSERT INTO geotest_result (date)  VALUES (%s)''',
-                           (uniq_id,))
+            cursor.execute('''INSERT INTO geotest_result ('date')  VALUES (%s)''',
+                           ('25-12-2016',))
+            cursor.execute('''INSERT INTO geotest_result ('time')  VALUES (%s)''',
+                           (dt[1],))
+            cursor.execute('''INSERT INTO geotest_result ('question')  VALUES (%s)''',
+                           (ans[1],))
+            cursor.execute('''INSERT INTO geotest_result ('answer')  VALUES (%s)''',
+                           (ans[2],))
+            cursor.execute('''INSERT INTO geotest_result ('check')  VALUES (%s)''',
+                           (check,))
+
     return HttpResponseRedirect('/tested')
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)

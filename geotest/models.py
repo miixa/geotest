@@ -41,11 +41,12 @@ class Answer(models.Model):
     check = models.IntegerField(null=True)
 
 class result(models.Model):
-    uniq_id = models.IntegerField(null=True)
-    date = models.DateField()
-    time = models.TimeField()
+    uniqid = models.CharField(max_length=20)
+    date = models.CharField(max_length=10)
+    time = models.CharField(max_length=10)
     question = models.ForeignKey(Question)
     answer = models.ForeignKey(Answer)
+    check = models.IntegerField()
 
 #class CorrectAnswer(models.Model):
 #   title = models.CharField(max_length=400)
