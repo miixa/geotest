@@ -3,6 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>TESTED</title>
+    {% for n in NameForInput %}
+        {{n.title}}
+        {{n.genname}}
+    {% endfor %}
+    {{NameForInput}}
     <form action="/tested/calculate" method="post">
     {% for qst in  Questions %}
         {% for sub in Subjects %}
@@ -14,7 +19,7 @@
                     <h6>Ответы</h6>
                     {% for ans in Answers %}
                         {% if qst.id == ans.question_id %}
-                                <input name="{{total_quests}}_{{qst.id}}_{{ans.id}}_" type="radio" >{{ans.title}}<br>
+                            <input name="{{gen_name}}" value="{{total_quests}}_{{qst.id}}_{{ans.id}}_" type="checkbox" >{{ans.title}}<br>
                         {% endif %}
                     {% endfor %}
                     <hr>

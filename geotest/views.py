@@ -88,9 +88,9 @@ def answer_view(request,subject_id,theme_id, question_id):
         'question': models.Question.objects.filter(user_id=0, subject_id=subject_id,
                                                    theme_id=theme_id,id=question_id),
         'answer_correct': models.Answer.objects.filter(user_id=0,subject_id=subject_id,
-                                                       theme_id=theme_id,question_id=question_id,check=1),
+                                                       theme_id=theme_id,question_id=question_id,result=1),
         'answer_incorrect': models.Answer.objects.filter(user_id=0, subject_id=subject_id,
-                                                       theme_id=theme_id, question_id=question_id, check=0),
+                                                       theme_id=theme_id, question_id=question_id, result=0),
         'addAnswerCorrectForm': forms.addAnswerCorrectForm,
         'addAnswerInCorrectForm': forms.addAnswerInCorrectForm,
 
@@ -107,7 +107,7 @@ def addAnswer_view(request, subject_id, theme_id, question_id):
                 'subject_id': subject_id,
                 'theme_id': theme_id,
                 'question_id': question_id,
-                'check': 1,
+                'result': 1,
                 'user_id': 0,
             }
             model_answer = models.Answer(**answer_correct)
@@ -119,7 +119,7 @@ def addAnswer_view(request, subject_id, theme_id, question_id):
                 'subject_id': subject_id,
                 'theme_id': theme_id,
                 'question_id': question_id,
-                'check': 0,
+                'result': 0,
                 'user_id': 0,
             }
             model_answer = models.Answer(**answer_incorrect)
@@ -136,55 +136,49 @@ def tested_choice_sub (request):
     return render_to_response('choice_subject.html',args,csrfContext)
 
 def tested_view(request, subject_id):
+
+    def rand_id():
+        rid = ''
+        for x in range(8): rid += random.choice(string.digits)
+        return rid
+
+
     csrfContext = RequestContext(request)
-    correct = [a for a in models.Answer.objects.filter(subject_id=subject_id)]
-    answers = []
-    answers.extend(correct)
+    answers = [a for a in models.Answer.objects.filter(subject_id=subject_id)]
+    questions = [a for a in models.Question.objects.filter(subject_id=subject_id)]
+
     args = {
-        'Questions':models.Question.objects.filter(subject_id=subject_id),
+        'Questions':questions,
         'Subjects': models.Subject.objects.filter(id=subject_id),
         'Themes': models.Theme.objects.filter(subject_id=subject_id),
         'Answers': answers,
         'Sub_id': subject_id,
+        'gen_name': rand_id(),
     }
     return render_to_response('tested.html',args,csrfContext)
 
-def calculate_view(request):
+def write_res_view(request):
     csrfContext = RequestContext(request)
     if request.method == 'POST':
         ans = request.body
         ans = ans.decode('utf-8')
         ans = ans.split('&')
-        def rand_id():
-            rid = ''
-            for x in range(8): rid += random.choice(string.digits)
-            return rid
+
         def dt():
             d = datetime.datetime.now()
             time = d.time().strftime("%H:%M")
             date = d.date().strftime("%Y-%m-%d")
             return (date, time)
-        uniq_id = rand_id()
+
         dt = dt()
         for ans in ans:
             ans = ans.split('_')
             cursor = connection.cursor()
-            cursor.execute('''SELECT 'check' FROM geotest_answer WHERE id=%s''',
+            cursor.execute('''SELECT result FROM geotest_answer WHERE id=%s''',
                            (ans[2],))
             check = cursor.fetchone()[0]
-            cursor.execute('''INSERT INTO geotest_result (uniqid)  VALUES (%s)''',
-                           (uniq_id,))
-            cursor.execute('''INSERT INTO geotest_result ('date')  VALUES (%s)''',
-                           ('25-12-2016',))
-            cursor.execute('''INSERT INTO geotest_result ('time')  VALUES (%s)''',
-                           (dt[1],))
-            cursor.execute('''INSERT INTO geotest_result ('question')  VALUES (%s)''',
-                           (ans[1],))
-            cursor.execute('''INSERT INTO geotest_result ('answer')  VALUES (%s)''',
-                           (ans[2],))
-            cursor.execute('''INSERT INTO geotest_result ('check')  VALUES (%s)''',
-                           (check,))
-
+            cursor.execute('''INSERT INTO geotest_results ('uniqid','date','time','question','answer','result')  VALUES (%s,%s,%s,%s,%s,%s)''',
+                           (ans[0][:-1],dt[0],dt[1],ans[1],ans[2],check,))
     return HttpResponseRedirect('/tested')
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)

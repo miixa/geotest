@@ -38,15 +38,15 @@ class Answer(models.Model):
     subject = models.ForeignKey(Subject)
     theme = models.ForeignKey(Theme)
     user = models.ForeignKey(CustomUser)
-    check = models.IntegerField(null=True)
+    result = models.IntegerField()
 
-class result(models.Model):
+class results(models.Model):
     uniqid = models.CharField(max_length=20)
     date = models.CharField(max_length=10)
     time = models.CharField(max_length=10)
     question = models.ForeignKey(Question)
     answer = models.ForeignKey(Answer)
-    check = models.IntegerField()
+    result = models.IntegerField()
 
 #class CorrectAnswer(models.Model):
 #   title = models.CharField(max_length=400)
