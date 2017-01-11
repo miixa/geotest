@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -102,6 +103,30 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+###############################
+#http://adw0rd.com/2013/2/27/django-social-auth/
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.contrib.vk.VKOAuth2Backend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+INSTALLED_APPS += [
+    'social_django',
+    'social.apps.django_app.default'
+]
+
+TEMPLATES[0]['OPTIONS']['context_processors']  += [
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_login_redirect',
+    ]
+###############################
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
