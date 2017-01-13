@@ -126,7 +126,7 @@ def addAnswer_view(request, subject_id, theme_id, question_id):
             model_answer.save()
     return HttpResponseRedirect('/test/answer/' + subject_id + '/' + theme_id + '/' + question_id)
 
-###########################TESTED#######################################
+#######################_____TESTED
 #
 #
 #
@@ -180,6 +180,39 @@ def write_res_view(request):
             cursor.execute('''INSERT INTO geotest_results ('uniqid','date','time','question','answer','result')  VALUES (%s,%s,%s,%s,%s,%s)''',
                            (ans[0][:-1],dt[0],dt[1],ans[1],ans[2],check,))
     return HttpResponseRedirect('/tested')
+
+#######################_____AUTH
+#
+#
+#
+def view_login (request):
+    csrfContext = RequestContext(request)
+    args = {
+        'client_id':'5818819'
+    }
+    return render_to_response('login.html',args,csrfContext)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #def addSubject_view(request):
 #    csrfContext = RequestContext(request)
 #    if request.method == 'POST':
