@@ -26,7 +26,9 @@ SECRET_KEY = '*pe!))7rtrr29cfhk0t#)9yve898ya)zg##u_=dvdpc)&8j3^l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	'coll.itteh.top',
+]
 
 
 # Application definition
