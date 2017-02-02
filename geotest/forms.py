@@ -14,7 +14,7 @@ class addSubjectForm(forms.Form):
     subject = forms.CharField(label="Предмет", max_length=20)
 
 class addThemeForm(forms.Form):
-    theme = forms.CharField(label="Тема", max_length=20)
+    theme = forms.CharField(label="Тема", max_length=200)
 
 class addQuestionForm(forms.Form):
     question = forms.CharField(label="",widget=forms.Textarea,max_length=400)

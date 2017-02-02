@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^tested/$',views.tested_choice_sub),
     url(r'^tested/(?P<subject_id>\d+)',views.tested_view),
     url(r'^tested/calculate',views.write_res_view),
+    url(r'^settingtest/(?P<subject_id>\d+)',views.setting_test),
     url(r'^login/', views.view_login),
+    url(r'',views.index),
 ]

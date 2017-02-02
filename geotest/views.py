@@ -11,6 +11,13 @@ import datetime
 import requests
 from django.http import HttpRequest
 
+def index(request):
+    csrfContext = RequestContext(request)
+    args = {
+        'subjects': models.Subject.objects.all(),
+    }
+    return render_to_response('index.html',args)
+
 def subject_view(request):
     csrfContext = RequestContext(request)
     args = {
@@ -137,6 +144,7 @@ def tested_choice_sub (request):
     return render_to_response('choice_subject.html',args,csrfContext)
 
 def tested_view(request, subject_id):
+    print (request.GET)
 
     def rand_id():
         rid = ''
@@ -190,7 +198,7 @@ def view_login (request):
     csrfContext = RequestContext(request)
     client_id = '5818819'
     client_secret = 'ieO41m5tv8lCXQgijusf'
-    code = request.GET['code']
+    code = str(request.GET.get('code'))
     redirect_uri = 'http://coll.itteh.top:8000/login'
     url = "https://oauth.vk.com/access_token?client_id="+client_id+"&client_secret="+client_secret+"&code="+code+"&redirect_uri="+redirect_uri
     r = requests.get(url)
@@ -211,6 +219,17 @@ def view_login (request):
         'redirect_uri':redirect_uri
     }
     return render_to_response('login.html',args,csrfContext)
+
+#######################_____SETTINGS_TEST
+#
+#
+#
+def setting_test (request,subject_id):
+    csrfContext = RequestContext(request)
+    args = {'themes':models.Theme.objects.all(),
+            'subject_id':subject_id
+            }
+    return render_to_response('settingstest.html', args, csrfContext)
 
 
 
