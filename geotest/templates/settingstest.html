@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<style type="text/css">
+#wrapper{
+    background: #FFF;
+    margin: 0 auto auto;
+    padding: 10px;
+    width: 960px;
+    border: 1px solid #DFDFDF;
+}
+
+#main{
+    border: 1px solid red;
+    padding: 5px;
+    margin: 0 auto auto;
+    padding: 30px;
+
+}
+#block{
+    display: inline-block;
+    padding: 80px;
+    border: 1px solid red;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+</style>
+
+<form action="/tested/{{ subject_id }}">
+    <div id="wrapper">
+        <div id="header">
+            header
+        </div>
+        <div id="main">
+            <div>
+                <div id="block">
+                    <fieldset>
+                        <h6>Темы</h6>
+                        {% for theme in themes %}
+                            <input type="checkbox" name="{{ theme.id }}" value="{{ theme.id }}">{{ theme.title }}<br>
+                        {% endfor %}
+                        <h6>Количество вопросов</h6>
+                        <p><input type="number" size="3" min="1" name="count"></p>
+                        <h6>Сожность</h6>
+                        <p><input type="checkbox" name="level" value="Low" >Легкие</p>
+                        <p><input type="checkbox" name="level" value="Medim" >Средние</p>
+                        <p><input type="checkbox" name="level" value="High" >Трудные</p>
+                        <h6>Время на тест</h6>
+                        <input type="time">
+                        <h6>Тест</h6>
+                        <p><input type="radio" name="present" value="all">Целиком</p>
+                        <p><input type="radio" name="present" value="one">По одному вопросу</p>
+                        <input type="submit" class="button" value="Начать">
+                </div>
+            </fieldset>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</form>
+</body>
+</html>

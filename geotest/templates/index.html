@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style type="text/css">
+#wrapper{
+    background: #FFF;
+    margin: 0 auto auto;
+    padding: 10px;
+    width: 960px;
+    border: 1px solid #DFDFDF;
+}
+
+#main{
+    border: 1px solid red;
+    padding: 5px;
+    margin: 0 auto auto;
+    padding: 30px;
+
+}
+#block{
+    display: inline-block;
+    padding: 80px;
+    border: 1px solid red;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+</style>
+
+    <div id="wrapper">
+        <div id="header">
+            header
+        </div>
+        <div id="main">
+            <div>
+                {% for subject in subjects %}
+                    <div id="block">
+                         <a href="/settingtest/{{subject.id}}"> {{subject.title}} </a><br>
+                    </div>
+                {% endfor %}
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</body>
+</html>
